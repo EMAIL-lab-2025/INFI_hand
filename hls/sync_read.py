@@ -5,7 +5,7 @@
 #
 # Available SCServo model on this example : All models using Protocol SCS
 # This example is tested with a SCServo(HLS), and an URT
-#
+# 多舵机同时读取位置
 
 import sys
 import os
@@ -17,7 +17,7 @@ from scservo_sdk import *                       # Uses SCServo SDK library
 # Initialize PortHandler instance
 # Set the port path
 # Get methods and members of PortHandlerLinux or PortHandlerWindows
-portHandler = PortHandler('/dev/ttyUSB0')# ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
+portHandler = PortHandler('/dev/ttyUSB3')# ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 
 # Initialize PacketHandler instance
 # Get methods and members of Protocol
@@ -41,7 +41,7 @@ else:
 groupSyncRead = GroupSyncRead(packetHandler, SMS_STS_PRESENT_POSITION_L, 4)
 
 while 1:
-    for scs_id in range(1, 11):
+    for scs_id in range(1, 18):
         # Add parameter storage for SCServo#1~10 present position value
         scs_addparam_result = groupSyncRead.addParam(scs_id)
         if scs_addparam_result != True:
@@ -51,7 +51,7 @@ while 1:
     if scs_comm_result != COMM_SUCCESS:
         print("%s" % packetHandler.getTxRxResult(scs_comm_result))
 
-    for scs_id in range(1, 11):
+    for scs_id in range(1, 18):
         # Check if groupsyncread data of SCServo#1~10 is available
         scs_data_result, scs_error = groupSyncRead.isAvailable(scs_id, SMS_STS_PRESENT_POSITION_L, 4)
         if scs_data_result == True:

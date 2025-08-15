@@ -61,7 +61,7 @@ else:
 while 1:
     # Servo (ID1) runs at a maximum speed of V=60 * 0.732=43.92rpm and an acceleration of A=50 * 8.7deg/s ^ 2 until it reaches position P1=4095
     # torque=500
-    scs_comm_result, scs_error = packetHandler.WritePosEx(1, 4095, 60, 50, 500)
+    scs_comm_result, scs_error = packetHandler.WritePosEx(1, 4095, 250, 50, 500)
     if scs_comm_result != COMM_SUCCESS:
         print("%s" % packetHandler.getTxRxResult(scs_comm_result))
     elif scs_error != 0:

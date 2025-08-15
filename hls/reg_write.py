@@ -5,7 +5,7 @@
 #
 # Available SCServo model on this example : All models using Protocol SCS
 # This example is tested with a SCServo(HLS), and an URT
-#
+# 可逐个判断舵机状态，适合调试阶段或对错误定位要求高的场景；实现简单，无需维护缓冲区，误差可忽略。
 
 import sys
 import os

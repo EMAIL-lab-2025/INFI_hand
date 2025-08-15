@@ -5,7 +5,7 @@
 #
 # Available SCServo model on this example : All models using Protocol SCS
 # This example is tested with a SCServo(HLS), and an URT
-#
+# 清除舵机旋转圈数
 
 import sys
 import os
@@ -37,11 +37,11 @@ else:
     quit()
 
 # 舵机状态重置(清除圈数)
-scs_comm_result, scs_error = packetHandler.reSet(1)
+scs_comm_result, scs_error = packetHandler.reSet(9)
 if scs_comm_result != COMM_SUCCESS:
     print("%s" % packetHandler.getTxRxResult(scs_comm_result))
 else:
-    print("[ID:%03d] reset Succeeded." % (1))
+    print("[ID:%03d] reset Succeeded." % (9))
 if scs_error != 0:
     print("%s" % packetHandler.getRxPacketError(scs_error))
 

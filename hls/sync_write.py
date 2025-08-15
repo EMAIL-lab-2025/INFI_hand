@@ -5,7 +5,7 @@
 #
 # Available SCServo model on this example : All models using Protocol SCS
 # This example is tested with a SCServo(HLS), and an URT
-#
+# 同步精度高、通信效率高，避免因数量多导致的延迟累积；通信负载低，不易因频繁通信导致数据冲突。
 
 import sys
 import os
@@ -39,7 +39,7 @@ else:
     quit()
 
 while 1:
-    for scs_id in range(1, 11):
+    for scs_id in range(1, 18):
         # Add servo(id)#1~10 goal position\moving speed\moving accc value to the Syncwrite parameter storage
         # Servo (ID1~10) runs at a maximum speed of V=60 * 0.732=43.92rpm and an acceleration of A=50 * 8.7deg/s ^ 2 until it reaches position P1=4095
          # torque=500
@@ -57,7 +57,7 @@ while 1:
 
     time.sleep(((4095-0)/(60*50) + (60*50)/(50*100) + 0.05))#[(P1-P0)/(V*50)] + [(V*50)/(A*100)] + 0.05
 
-    for scs_id in range(1, 11):
+    for scs_id in range(1, 18):
         # Add servo#1~10 goal position\moving speed\moving accc value to the Syncwrite parameter storage
         # Servo (ID1~10) runs at a maximum speed of V=60 * 0.732=43.92rpm and an acceleration of A=50 * 8.7deg/s ^ 2 until P0=0 position
         # torque=500
