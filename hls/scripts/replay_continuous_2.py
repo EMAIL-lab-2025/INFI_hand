@@ -11,6 +11,9 @@ def main():
     parser = argparse.ArgumentParser(description='Replay continuous hand joint movements.')
     parser.add_argument('model_path', type=str, help='Path to the OrcaHand model folder (e.g., /path/to/orcahand_v1_right)')
     parser.add_argument('replay_file', type=str, help='YAML file containing the recorded angles and metadata')
+    
+    parser.add_argument('--rate-scale', type=float, default=3,help='时间倍率：>1 放慢整体回放，<1 加快（默认 1.0）')
+
     args = parser.parse_args()
 
     try:
@@ -32,7 +35,7 @@ def main():
 
     print("Replaying with ", sampling_frequency, " Hz...")
 
-    step_time = 1.0 / sampling_frequency  # j
+    step_time = 1.0 / sampling_frequency * args.rate_scale  # j
 
     waypoints = replay_data.get("angles", [])
     if not waypoints:
@@ -59,18 +62,11 @@ def main():
     try:
         start_time = time.time()
         for i, pose in enumerate(waypoints):
-            start = time.time()  # <<<<< 记录开始时间
-
-            hand.set_joint_pos(pose)  # 控制执行动作
-
-            elapsed = time.time() - start  # <<<<< 记录耗时
-            print(f"[Frame {i}] Elapsed: {elapsed:.4f}s")  # <<<<< 打印出来看看有没有卡顿
-
+            hand.set_joint_pos(pose)
             target_time = start_time + i * step_time
             now = time.time()
             if now < target_time:
                 time.sleep(target_time - now)
-
            
 
     except KeyboardInterrupt:

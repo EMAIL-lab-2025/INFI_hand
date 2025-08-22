@@ -2,7 +2,7 @@ import argparse
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from core_new_2 import OrcaHand
+from hls.contrl.core_new_2 import OrcaHand
 import time 
 
 def main():

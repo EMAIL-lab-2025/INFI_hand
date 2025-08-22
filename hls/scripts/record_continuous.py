@@ -4,11 +4,11 @@ import argparse
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from core_new_2 import OrcaHand
+from hls.contrl.core_new_2 import OrcaHand
 from datetime import datetime
 
 
-def record_continuous_angles(hand, output_dir=".", sampling_frequency=20.0, duration=None):
+def record_continuous_angles(hand, output_dir=".", sampling_frequency=50.0, duration=None):
     """
     Continuously records joint angles from the OrcaHand.
 
@@ -71,7 +71,7 @@ def record_continuous_angles(hand, output_dir=".", sampling_frequency=20.0, dura
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Record continuous joint angles from the OrcaHand.")
     parser.add_argument("model_path", type=str, help="Path to the OrcaHand model")
-    parser.add_argument("--frequency", type=float, default=20.0, help="Sampling frequency in Hz")
+    parser.add_argument("--frequency", type=float, default=50.0, help="Sampling frequency in Hz")
     parser.add_argument("--duration", type=float, default=None, help="Recording duration in seconds (optional)")
     parser.add_argument("--output_dir", type=str, default=".", help="Directory to save the output file")
     args = parser.parse_args()

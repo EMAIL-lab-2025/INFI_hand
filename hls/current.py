@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from client_new_2 import BMotorClient  # 根据你实际的路径导入
+from hls.contrl.client_new_2 import BMotorClient  # 根据你实际的路径导入
 
 def test_write_pos_with_raw_input():
     # 初始化参数

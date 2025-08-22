@@ -1,7 +1,7 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from client_new_2 import BMotorClient
+from hls.contrl.client_new_2 import BMotorClient
 
 def test_read_positions():
     # 替换为你当前使用的舵机 ID 列表和串口

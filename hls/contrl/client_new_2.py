@@ -28,7 +28,7 @@ ADDR_GOAL_TORQUE_L = 44
 class BMotorClient:
     def __init__(self,
                  motor_ids: Sequence[int],
-                 port: str = "/dev/ttyUSB0",
+                 port: str = "/dev/ttyUSB3",
                  baudrate: int = 1000000,
                  pos_scale: Optional[float] = DEFAULT_POS_SCALE,
                  vel_scale: Optional[float] = DEFAULT_VEL_SCALE,
@@ -101,40 +101,104 @@ class BMotorClient:
             torque=torque
         )
 
-    def write_positions_with_speed_acc_torque(self, position_dict, speed=15, acc=20, torque=125):
+    # def write_positions_with_speed_acc_torque(self, position_dict, speed=10, acc=10, torque=165):
+    #     spd_int = int(speed / self.vel_scale)
+    #     acc_int = int(acc)
+    #     torque_int = int(torque / self.cur_scale)
+
+    #     # 一次性读取所有 current，避免 N×N 查询
+    #     currents = self.read_currents()
+
+    #     param_list = []
+    #     for motor_id, angle in position_dict.items():
+    #         pos_int = int(angle / self.pos_scale)
+    #         current = currents.get(motor_id, -1)
+
+    #         print(f"[SEND] Motor {motor_id}: raw_pos={pos_int}, current={current:.1f}mA, "
+    #             f"spd={spd_int}, acc={acc_int}, torque={torque_int}")
+
+    #         param_list += [
+    #             motor_id,
+    #             acc_int,
+    #             self.packetHandler.scs_lobyte(pos_int), self.packetHandler.scs_hibyte(pos_int),
+    #             self.packetHandler.scs_lobyte(torque_int), self.packetHandler.scs_hibyte(torque_int),
+    #             self.packetHandler.scs_lobyte(spd_int), self.packetHandler.scs_hibyte(spd_int),
+    #         ]
+
+    #     result = self.packetHandler.syncWriteTxOnly(
+    #         start_address=ADDR_GOAL_ACCELERATION,
+    #         data_length=7,
+    #         param=param_list,
+    #         param_length=len(param_list)
+    #     )
+
+    #     if result != COMM_SUCCESS:
+    #         print(f"[SyncWrite] Failed: {self.packetHandler.getTxRxResult(result)}")
+
+    def write_positions_with_speed_acc_torque(self,position_dict,speed=10,acc=10,torque=160,num_steps: int = 1,step_size: float = 0.0,):
+        """
+        在原同步群发的基础上增加“按函数1思路的线性插值”能力：
+        - num_steps == 1  : 老行为（一步到位，不等待）
+        - num_steps >  1  : 读取当前电机角→线性插值→每步群发；step_size>0 时每步 sleep
+        """
+
         spd_int = int(speed / self.vel_scale)
         acc_int = int(acc)
         torque_int = int(torque / self.cur_scale)
 
-        # ✅ 一次性读取所有 current，避免 N×N 查询
-        currents = self.read_currents()
+        def _sync_write_angles(rad_dict):
+            """将弧度角 dict 群发到电机"""
+            param_list = []
+            for motor_id, angle in rad_dict.items():
+                pos_int = int(angle / self.pos_scale)
+                param_list += [
+                    motor_id,
+                    acc_int,
+                    self.packetHandler.scs_lobyte(pos_int), self.packetHandler.scs_hibyte(pos_int),
+                    self.packetHandler.scs_lobyte(torque_int), self.packetHandler.scs_hibyte(torque_int),
+                    self.packetHandler.scs_lobyte(spd_int), self.packetHandler.scs_hibyte(spd_int),
+                ]
 
-        param_list = []
+            result = self.packetHandler.syncWriteTxOnly(
+                start_address=ADDR_GOAL_ACCELERATION,
+                data_length=7,
+                param=param_list,
+                param_length=len(param_list)
+            )
+            if result != COMM_SUCCESS:
+                print(f"[SyncWrite] Failed: {self.packetHandler.getTxRxResult(result)}")
+
+        # ====== 情况 A：分步插值（函数1思路）======
+        if num_steps is not None and num_steps > 1:
+            # 1) 起点：一次性读取当前“电机角（弧度）”
+            start_all = self.read_positions()  # {id: rad}
+            # 只对这次要动到的电机做插值（缺省则视为 0）
+            start = {mid: float(start_all.get(mid, 0.0)) for mid in position_dict.keys()}
+            target = {mid: float(val) for mid, val in position_dict.items()}
+
+            # 2) 线性插值：共 num_steps 步，每步群发
+            for step in range(1, num_steps + 1):
+                t = step / float(num_steps)
+                inter = {}
+                for mid in target.keys():
+                    inter[mid] = start[mid] * (1.0 - t) + target[mid] * t
+                _sync_write_angles(inter)
+
+                # 与函数1一致：若设置了 step_size，则步间等待；最后一步不等
+                if step < num_steps and step_size and step_size > 0.0:
+                    time.sleep(step_size)
+            return
+
+        # ====== 情况 B：老行为（一步到位）======
+        # （保留一次性“电流打印”的风格；如不需要可删掉以下打印块）
+        currents = self.read_currents()
         for motor_id, angle in position_dict.items():
             pos_int = int(angle / self.pos_scale)
-            current = currents.get(motor_id, -1)
-
-            print(f"[SEND] Motor {motor_id}: raw_pos={pos_int}, current={current:.1f}mA, "
+            cur = currents.get(motor_id, -1)
+            print(f"[SEND] Motor {motor_id}: raw_pos={pos_int}, current={cur:.1f}mA, "
                 f"spd={spd_int}, acc={acc_int}, torque={torque_int}")
 
-            param_list += [
-                motor_id,
-                acc_int,
-                self.packetHandler.scs_lobyte(pos_int), self.packetHandler.scs_hibyte(pos_int),
-                self.packetHandler.scs_lobyte(torque_int), self.packetHandler.scs_hibyte(torque_int),
-                self.packetHandler.scs_lobyte(spd_int), self.packetHandler.scs_hibyte(spd_int),
-            ]
-
-        result = self.packetHandler.syncWriteTxOnly(
-            start_address=ADDR_GOAL_ACCELERATION,
-            data_length=7,
-            param=param_list,
-            param_length=len(param_list)
-        )
-
-        if result != COMM_SUCCESS:
-            print(f"[SyncWrite] Failed: {self.packetHandler.getTxRxResult(result)}")
-
+        _sync_write_angles({mid: float(ang) for mid, ang in position_dict.items()})
 
 
     def write_desired_pos(self, motor_ids: Sequence[int], positions: Union[float, Sequence[float]]):

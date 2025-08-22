@@ -6,7 +6,7 @@ import numpy as np
 
 # 添加 core_new_2.py 所在路径
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from core_new_2 import OrcaHand
+from hls.contrl.core_new_2 import OrcaHand
 
 def main():
     config_path = sys.argv[1] if len(sys.argv) > 1 else "./orcahand_v1_right/config.yaml"

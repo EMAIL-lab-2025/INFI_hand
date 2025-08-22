@@ -2,7 +2,7 @@ import time
 import numpy as np
 from typing import Dict, Union, Optional, Sequence
 
-from client_new_2 import BMotorClient
+from hls.contrl.client_new_2 import BMotorClient
 
 
 class BMotorAdapter:

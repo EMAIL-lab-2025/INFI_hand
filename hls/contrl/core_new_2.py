@@ -2,7 +2,7 @@ import os
 import time
 import numpy as np
 import yaml
-from client_new_2 import BMotorClient
+from hls.contrl.client_new_2 import BMotorClient
 
 class OrcaHand:
     def __init__(self, model_path=None):
