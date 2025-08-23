@@ -46,3 +46,4 @@ Succeeded to open the port
 Succeeded to change the baudrate
 [ID:001] ping Succeeded. SCServo model number : 1540
 ```
+启动代码示例（terminal）：python -m hls.scripts.calibrate hls/orcahand_v1_right

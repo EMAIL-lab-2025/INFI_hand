@@ -4,7 +4,7 @@ import threading
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from hls.contrl.core_new_2 import OrcaHand
+from contrl.core3 import OrcaHand
 # 运行时建议输入类似指令：PYTHONPATH=/home/dw/INFI_hand python /home/dw/INFI_hand/hls/scripts/record_angles.py
 
 def main():
