@@ -429,8 +429,8 @@ class BMotorClient:
         assert len(motor_ids) == len(positions)
         
         # Default values if not specified
-        default_speed = 60
-        default_torque = 500
+        default_speed = 30
+        default_torque = 300
         
         for mid, pos_rad in zip(motor_ids, positions):
             # Convert radians to raw position values
