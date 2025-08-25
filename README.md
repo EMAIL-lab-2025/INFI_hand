@@ -48,3 +48,4 @@ Succeeded to change the baudrate
 [ID:001] ping Succeeded. SCServo model number : 1540
 ```
 启动代码示例（terminal）：python -m hls.scripts.calibrate hls/orcahand_v1_right
+运行飞特舵机官方代码示例（terminal）：PYTHONPATH=$PYTHONPATH:/home/dw/INFI_hand/scservo_sdk python hls/sync_read.py /home/dw/INFI_hand/scservo_sdk
