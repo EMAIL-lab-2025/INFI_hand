@@ -38,7 +38,7 @@ class BMotorClient:
     
     def __init__(self,
                  motor_ids: Sequence[int],
-                 port: str = "/dev/ttyUSB3",
+                 port: str = "/dev/ttyUSB0",
                  baudrate: int = 1000000,
                  pos_scale: Optional[float] = None,
                  vel_scale: Optional[float] = None,
@@ -142,38 +142,6 @@ class BMotorClient:
                 time.sleep(retry_interval)
                 retries -= 1
 
-
-
-    # def read_pos_vel_cur(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    #     """Read position, velocity and current for all motors"""
-    #     self.check_connected()
-        
-    #     positions = []
-    #     velocities = []
-    #     currents = []
-        
-    #     for mid in self.motor_ids:
-    #         # Read position (2 bytes)
-    #         pos_raw, result, error = self.packetHandler.read2ByteTxRx(
-    #             mid, ADDR_PRESENT_POSITION_L)
-    #         pos = self.packetHandler.scs_tohost(pos_raw, 15) * self.pos_scale
-            
-    #         # Read velocity (2 bytes)
-    #         vel_raw, result, error = self.packetHandler.read2ByteTxRx(
-    #             mid, ADDR_PRESENT_SPEED_L)
-    #         vel = self.packetHandler.scs_tohost(vel_raw, 15) * self.vel_scale
-            
-    #         # Read current (2 bytes)
-    #         cur_raw, result, error = self.packetHandler.read2ByteTxRx(
-    #             mid, ADDR_PRESENT_CURRENT_L)
-    #         cur = self.packetHandler.scs_tohost(cur_raw, 15) * self.cur_scale
-            
-    #         positions.append(pos)
-    #         velocities.append(vel)
-    #         currents.append(cur)
-        
-    #     return np.array(positions), np.array(velocities), np.array(currents)
-
     def read_temperature(self) -> np.ndarray:
         """Read temperature for all motors"""
         self.check_connected()
@@ -196,40 +164,6 @@ class BMotorClient:
             status.append(moving == 0)  # 0 means stopped, 1 means moving
         
         return np.array(status, dtype=bool)
-
-    # def write_desired_pos(self, motor_ids: Sequence[int], positions: np.ndarray):
-    #     """Write desired positions to motors (in radians) using syncWriteTxOnly"""
-    #     self.check_connected()
-    #     assert len(motor_ids) == len(positions)
-        
-    #     # Prepare parameters for sync write
-    #     # Each motor needs: ID (1 byte) + Position_L (1 byte) + Position_H (1 byte)
-    #     param = []
-        
-    #     for mid, pos_rad in zip(motor_ids, positions):
-    #         # Convert radians to raw position values
-    #         pos_raw = int(pos_rad / self.pos_scale)
-    #         # Clamp to valid range
-    #         # pos_raw = np.clip(pos_raw, 0, 4095) # 原范围
-    #         pos_raw = np.clip(pos_raw, -1500, 6000)
-
-    #         # Add to parameter list: ID, Position_L, Position_H
-    #         param.append(mid)
-    #         param.append(self.packetHandler.scs_lobyte(pos_raw))
-    #         param.append(self.packetHandler.scs_hibyte(pos_raw))
-        
-    #     # Use syncWriteTxOnly to write positions
-    #     # start_address = ADDR_GOAL_POSITION_L (42)
-    #     # data_length = 2 (Position_L + Position_H)
-    #     result = self.packetHandler.syncWriteTxOnly(
-    #         start_address=ADDR_GOAL_POSITION_L,
-    #         data_length=2,
-    #         param=param,
-    #         param_length=len(param)
-    #     )
-        
-    #     if result != COMM_SUCCESS:
-    #         logging.error(f"Failed to sync write positions: {self.packetHandler.getTxRxResult(result)}")
 
     def write_desired_current(self, motor_ids: Sequence[int], currents: np.ndarray):
         """Set current/torque limits for motors"""
@@ -394,7 +328,7 @@ class BMotorClient:
             velocities.append(vel)
             currents.append(cur)
         
-            return np.array(positions), np.array(velocities), np.array(currents)
+        return np.array(positions), np.array(velocities), np.array(currents)
 
     def read_single_motor_current(self, motor_id: int) -> float:
         """Read current for a single motor with proper signed handling"""
@@ -505,19 +439,41 @@ class BMotorClient:
         """Synchronized write with position, speed, acceleration and torque using extended range"""
         self.check_connected()
         
-        for motor_id, pos_rad in position_dict.items():
-            # Convert radians to raw position
+        # 准备同步写入的参数
+        # 格式: [ID1, acc, pos_L, pos_H, torque_L, torque_H, speed_L, speed_H, ID2, ...]
+        param = []
+        
+        for motor_id in self.motor_ids:  # 使用固定的motor_ids顺序确保一致性
+            if motor_id in position_dict:
+                pos_rad = position_dict[motor_id]
+            else:
+                # 如果某个电机没有指定位置，读取其当前位置
+                pos_rad = self.read_single_motor_position(motor_id)
+            
+            # 转换弧度到原始位置值
             pos_raw = int(pos_rad / self.pos_scale)
             pos_scs = self.packetHandler.scs_toscs(pos_raw, 15)
             
-            # Write acceleration
-            self.packetHandler.write1ByteTxRx(motor_id, ADDR_GOAL_ACCELERATION, acc)
-            
-            # Write position (2 bytes)
-            self.packetHandler.write2ByteTxRx(motor_id, ADDR_GOAL_POSITION_L, pos_scs)
-            
-            # Write torque (2 bytes)
-            self.packetHandler.write2ByteTxRx(motor_id, ADDR_GOAL_TORQUE_L, torque)
-            
-            # Write speed (2 bytes)
-            self.packetHandler.write2ByteTxRx(motor_id, ADDR_GOAL_SPEED_L, speed)
+            # 添加到参数列表
+            param.append(motor_id)
+            param.append(acc)
+            param.append(self.packetHandler.scs_lobyte(pos_scs))
+            param.append(self.packetHandler.scs_hibyte(pos_scs))
+            param.append(self.packetHandler.scs_lobyte(torque))
+            param.append(self.packetHandler.scs_hibyte(torque))
+            param.append(self.packetHandler.scs_lobyte(speed))
+            param.append(self.packetHandler.scs_hibyte(speed))
+        
+        # 使用同步写入一次性发送所有命令
+        result = self.packetHandler.syncWriteTxOnly(
+            start_address=ADDR_GOAL_ACCELERATION,
+            data_length=7,  # acc(1) + pos(2) + torque(2) + speed(2)
+            param=param,
+            param_length=len(param)
+        )
+        
+        if result != COMM_SUCCESS:
+            logging.error(f"Sync write failed: {self.packetHandler.getTxRxResult(result)}")
+            # 如果同步写入失败，回退到逐个写入（保证兼容性）
+            for motor_id, pos_rad in position_dict.items():
+                self.write_single_motor_position(motor_id, pos_rad, speed, torque, acc)

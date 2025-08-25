@@ -224,7 +224,7 @@ class OrcaHand:
         return joint_pos
 
     def set_joint_pos(self, joint_pos: Union[dict, list], num_steps: int = 1, step_size: float = 1.0,
-                 speed: int = 60, torque: int = 500, acceleration: int = 50):
+                 speed: int = 60, torque: int = 400, acceleration: int = 50):
         """Set joint positions with configurable motion parameters"""
         if num_steps > 1:
             current_positions = self.get_joint_pos(as_list=False)
@@ -274,7 +274,7 @@ class OrcaHand:
                         speed=speed, torque=torque, acceleration=acceleration)
 
     def set_neutral_position(self, num_steps: int = 25, step_size: float = 0.001,
-                            speed: int = 60, torque: int = 500, acceleration: int = 50):
+                            speed: int = 40, torque: int = 400, acceleration: int = 50):
         """Move to neutral position with configurable motion parameters"""
         if not self.neutral_position:
             raise ValueError("Neutral position not defined in config")
@@ -710,27 +710,41 @@ class OrcaHand:
         print(f"[Load Calibration] Loaded. Calibrated: {self.calibrated}")
 
     def _set_motor_pos(self, desired_pos: Union[dict, np.ndarray, list], 
-                  rel_to_current: bool = False, speed: int = 60, 
-                  torque: int = 500, acceleration: int = 50):
-        """Set motor positions (internal) with motion parameters"""
+                rel_to_current: bool = False, speed: int = 60, 
+                torque: int = 500, acceleration: int = 50):
+        """Set motor positions (internal) with motion parameters using synchronized write"""
         with self._motor_lock:
             current_pos = self.get_motor_pos()
             
+            # 准备所有电机的位置字典
+            position_dict = {}
+            
             if isinstance(desired_pos, dict):
-                motor_pos_array = np.array([
-                    desired_pos.get(mid, 0 if rel_to_current else current_pos[i])
-                    for i, mid in enumerate(self.motor_ids)
-                ])
+                # 如果输入是字典，填充所有电机的位置
+                for i, mid in enumerate(self.motor_ids):
+                    if mid in desired_pos:
+                        position_dict[mid] = desired_pos[mid]
+                    else:
+                        # 保持当前位置
+                        position_dict[mid] = current_pos[i] if not rel_to_current else 0
             elif isinstance(desired_pos, (np.ndarray, list)):
+                # 如果输入是数组/列表，按顺序映射到电机ID
                 motor_pos_array = np.array(desired_pos)
+                if len(motor_pos_array) != len(self.motor_ids):
+                    raise ValueError(f"Position array length {len(motor_pos_array)} doesn't match motor count {len(self.motor_ids)}")
+                
+                for i, mid in enumerate(self.motor_ids):
+                    position_dict[mid] = motor_pos_array[i]
             else:
                 raise ValueError("desired_pos must be dict, ndarray or list")
             
+            # 处理相对位置
             if rel_to_current:
-                motor_pos_array += current_pos
+                for i, mid in enumerate(self.motor_ids):
+                    if mid in position_dict:
+                        position_dict[mid] += current_pos[i]
             
-            # Use the enhanced position writing method
-            position_dict = {mid: pos for mid, pos in zip(self.motor_ids, motor_pos_array)}
+            # 使用同步写入方法一次性设置所有电机
             self._motor_client.write_positions_with_speed_acc_torque(
                 position_dict, speed=speed, acc=acceleration, torque=torque)
 
@@ -766,7 +780,7 @@ class OrcaHand:
 
     def _joint_to_motor_pos(self, joint_pos: dict) -> np.ndarray:
         """Convert joint positions to motor positions"""
-        motor_pos = self.get_motor_pos()
+        motor_pos = self.get_motor_pos().copy()  # 确保获取完整的电机位置数组
         
         for joint_name, pos in joint_pos.items():
             if pos is None:
@@ -776,23 +790,34 @@ class OrcaHand:
             if motor_id is None:
                 continue
             
-            # Check if calibrated
+            # 检查电机ID是否在电机列表中
+            if motor_id not in self.motor_ids:
+                print(f"Warning: Motor {motor_id} for joint {joint_name} not in motor_ids")
+                continue
+            
+            # 检查是否已校准
             if (motor_id not in self.motor_limits or
                 any(limit is None for limit in self.motor_limits[motor_id])):
                 raise ValueError(f"Motor {motor_id} ({joint_name}) not calibrated")
             
             motor_idx = self.motor_ids.index(motor_id)
             
-            # Convert position
+            # 确保索引在有效范围内
+            if motor_idx >= len(motor_pos):
+                print(f"Error: motor_idx {motor_idx} >= len(motor_pos) {len(motor_pos)}")
+                print(f"motor_ids: {self.motor_ids}")
+                print(f"motor_pos shape: {motor_pos.shape}")
+                raise IndexError(f"Motor index {motor_idx} out of range for motor_pos array")
+            
+            # 转换位置
             if self.joint_inversion.get(joint_name, False):
                 motor_pos[motor_idx] = (self.motor_limits[motor_id][0] + 
-                                       (self.joint_roms[joint_name][1] - pos) * 
-                                       self.joint_to_motor_ratios[motor_id])
+                                    (self.joint_roms[joint_name][1] - pos) * 
+                                    self.joint_to_motor_ratios[motor_id])
             else:
                 motor_pos[motor_idx] = (self.motor_limits[motor_id][0] + 
-                                       (pos - self.joint_roms[joint_name][0]) * 
-                                       self.joint_to_motor_ratios[motor_id])
-        
+                                    (pos - self.joint_roms[joint_name][0]) * 
+                                    self.joint_to_motor_ratios[motor_id])
         return motor_pos
 
     def _sanity_check(self):

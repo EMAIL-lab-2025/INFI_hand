@@ -1,3 +1,4 @@
+# 运行指令参考：python -m hls.scripts.replay_continuous /home/dw/INFI_hand/hls/orcahand_v1_right tt2_continuous_angles_20250825_124652.yaml
 import time
 import yaml
 import numpy as np
@@ -64,7 +65,6 @@ def main():
             now = time.time()
             if now < target_time:
                 time.sleep(target_time - now)
-           
 
     except KeyboardInterrupt:
         print("Replay interrupted.")

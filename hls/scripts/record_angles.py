@@ -1,3 +1,4 @@
+# 运行指令参考：python -m hls.scripts.record_angles
 import time
 import yaml
 import threading
@@ -5,13 +6,12 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from contrl.core3 import OrcaHand
-# 运行时建议输入类似指令：PYTHONPATH=/home/dw/INFI_hand python /home/dw/INFI_hand/hls/scripts/record_angles.py
 
 def main():
     
     filename = input("Enter the filename to save the replay sequence (default: replay_sequence.yaml): ")
     
-    hand = OrcaHand('/home/dw/INFI_hand/hls/orcahand_v1_right/config.yaml')
+    hand = OrcaHand('/home/dw/INFI_hand/hls/orcahand_v1_right')
     status = hand.connect()
     print(status)
 

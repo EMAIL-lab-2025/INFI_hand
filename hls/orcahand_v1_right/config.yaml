@@ -3,7 +3,7 @@ baudrate: 1000000
 # baudrate:: 57600
 # port: /dev/ttyUSB0 # linux
 # port: /dev/tty.usbserial-FT9MISJT # mac
-port: /dev/ttyUSB3
+port: /dev/ttyUSB0
 max_current: 600
 
 type: right
@@ -53,6 +53,7 @@ joint_roms:
   pinky_pip: [-20, 108]
   wrist: [-50, 30]
 
+# neutral_position是角度值，建议人工运行sync_read之后记录每个舵机的位置值（并非弧度），再填写
 neutral_position:
   thumb_mcp: -13
   thumb_abd: 43
