@@ -33,7 +33,7 @@ INFI_HAND/
 
 - **`scripts/`**  
   Adapted from the official [ORCA Hand repository](https://github.com/orcahand).  
-  Only minimal modifications were made to function calls. Please refer to the official repository for the original versions.  
+  Only minimal modifications were made to function calls. See the official repository for the original versions.  
 
 - **`modified CAD/`**  
   Contains our adapted CAD files for Feetech servos.  
