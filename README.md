@@ -10,6 +10,8 @@ The project also includes adapted CAD files to fit Feetech servos.
 ## Project Structure
 ```
 INFI_HAND/
+├── environment/
+│ ├── environment.yml
 ├── hls/
 │ ├── contrl/
 │ │ ├── client3.py # Handles communication with servos
@@ -45,25 +47,21 @@ INFI_HAND/
 
 Follow the steps below to set up and use **INFI HAND**:
 
-### Step 1. Create a virtual environment (recommended)
+### Step 1. Create a virtual environmentand install dependencies (recommended) 
 ```bash
-python -m venv venv
-source venv/bin/activate
+conda env create -f environment.yml
+conda activate INFI_HAND
 ```
-### Step 2. Install dependencies
-```bash
-pip install -e .
-```
-### Step 3. Configure your setup
+### Step 2. Configure your setup
 Review the configuration file (e.g., `INFI_hand/hls/orcahand_v1_right/config.yaml`)  
 and ensure it matches your hardware setup.
-### Step 4. Run tension and calibration scripts
+### Step 3. Run tension and calibration scripts
 ```bash
 python -m hls.HAND.scripts.tension hls/HAND/orcahand_v1_right
 python -m hls.HAND.scripts.calibrate hls/HAND/orcahand_v1_right
 ```
-### Step 5. Record and replay operations
-After debugging and calibration, you can use the `record` and `replay` scripts  
+### Step 4. Record and replay operations 
+After debugging and calibration, you can run record and replay scripts  
 to capture and reproduce a sequence of hand operations.
 
 ## LICENSE
