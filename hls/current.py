@@ -8,7 +8,7 @@ def test_write_pos_with_raw_input():
     motor_ids = [1]             # 假设我们只控制一个舵机
     raw_input = [3965]          # 例如中间位置（非弧度）
 
-    # 创建 client（你要确保端口和波特率正确）
+    # 创建 client（
     client = BMotorClient(motor_ids, port='/dev/ttyUSB1', baudrate=1000000)
     client.connect()
     client.enable_torque()

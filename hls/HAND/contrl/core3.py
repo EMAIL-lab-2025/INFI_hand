@@ -224,7 +224,7 @@ class OrcaHand:
         return joint_pos
 
     def set_joint_pos(self, joint_pos: Union[dict, list], num_steps: int = 1, step_size: float = 1.0,
-                 speed: int = 60, torque: int = 400, acceleration: int = 50):
+                 speed: int = 60, torque: int = 600, acceleration: int = 50):
         """Set joint positions with configurable motion parameters"""
         if num_steps > 1:
             current_positions = self.get_joint_pos(as_list=False)
