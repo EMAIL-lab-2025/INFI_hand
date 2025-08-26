@@ -1,6 +1,4 @@
-# 运行指令参考：python -m hls.scripts.replay_angles /home/dw/INFI_hand/hls/orcahand_v1_right
-# 看到 ERROR:root:Failed to set torque for IDs: [1, 2, 3, 4, 5, 6, 7, 8,
-#（接上一行）9, 10, 11, 12, 13, 14, 15, 16, 17] 是正常现象，不影响使用
+# Run command (for reference)：python -m hls.scripts.replay_angles /home/dw/INFI_hand/hls/orcahand_v1_right
 import time
 import yaml
 import numpy as np

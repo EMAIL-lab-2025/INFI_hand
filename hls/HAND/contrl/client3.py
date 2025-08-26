@@ -1,5 +1,3 @@
-# client_new_3.py (corrected version)
-
 import atexit
 import logging
 import time
@@ -439,22 +437,22 @@ class BMotorClient:
         """Synchronized write with position, speed, acceleration and torque using extended range"""
         self.check_connected()
         
-        # 准备同步写入的参数
-        # 格式: [ID1, acc, pos_L, pos_H, torque_L, torque_H, speed_L, speed_H, ID2, ...]
+        # Prepare parameters for synchronized write
+        # Format: [ID1, acc, pos_L, pos_H, torque_L, torque_H, speed_L, speed_H, ID2, ...]
         param = []
         
-        for motor_id in self.motor_ids:  # 使用固定的motor_ids顺序确保一致性
+        for motor_id in self.motor_ids:  # Use fixed motor_ids order to ensure consistency
             if motor_id in position_dict:
                 pos_rad = position_dict[motor_id]
             else:
-                # 如果某个电机没有指定位置，读取其当前位置
+                # If position not specified for this motor, read its current position
                 pos_rad = self.read_single_motor_position(motor_id)
             
-            # 转换弧度到原始位置值
+            # Convert radians to raw position value
             pos_raw = int(pos_rad / self.pos_scale)
             pos_scs = self.packetHandler.scs_toscs(pos_raw, 15)
             
-            # 添加到参数列表
+            # Add to parameter list
             param.append(motor_id)
             param.append(acc)
             param.append(self.packetHandler.scs_lobyte(pos_scs))
@@ -464,7 +462,7 @@ class BMotorClient:
             param.append(self.packetHandler.scs_lobyte(speed))
             param.append(self.packetHandler.scs_hibyte(speed))
         
-        # 使用同步写入一次性发送所有命令
+        # Use synchronized write to send all commands at once
         result = self.packetHandler.syncWriteTxOnly(
             start_address=ADDR_GOAL_ACCELERATION,
             data_length=7,  # acc(1) + pos(2) + torque(2) + speed(2)
@@ -474,6 +472,6 @@ class BMotorClient:
         
         if result != COMM_SUCCESS:
             logging.error(f"Sync write failed: {self.packetHandler.getTxRxResult(result)}")
-            # 如果同步写入失败，回退到逐个写入（保证兼容性）
+            # If synchronized write fails, fall back to individual writes (ensure compatibility)
             for motor_id, pos_rad in position_dict.items():
                 self.write_single_motor_position(motor_id, pos_rad, speed, torque, acc)

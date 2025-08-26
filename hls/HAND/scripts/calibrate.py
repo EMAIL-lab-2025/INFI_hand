@@ -1,4 +1,4 @@
-# 运行时输入python -m hls.scripts.calibrate hls/orcahand_v1_right
+# Run command (for reference)：python -m hls.scripts.calibrate hls/orcahand_v1_right
 import argparse
 import sys
 import os

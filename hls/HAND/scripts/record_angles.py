@@ -1,4 +1,4 @@
-# 运行指令参考：python -m hls.scripts.record_angles
+# Run command (for reference)：python -m hls.scripts.record_angles
 import time
 import yaml
 import threading
