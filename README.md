@@ -60,7 +60,7 @@ and ensure it matches your hardware setup.
 python -m hls.HAND.scripts.tension hls/HAND/orcahand_v1_right
 python -m hls.HAND.scripts.calibrate hls/HAND/orcahand_v1_right
 ```
-### Step 4. Record and replay operations 
+### Step 4. Try to record and replay
 After debugging and calibration, you can run record and replay scripts  
 to capture and reproduce a sequence of hand operations.
 
