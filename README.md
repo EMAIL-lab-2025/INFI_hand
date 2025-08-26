@@ -1,7 +1,7 @@
 # INFI HAND
 
 ## Overview
-**INFI HAND** is a robotic hand control system based on the **ORCA Hand** design, with custom modifications, and developed using **Feetech servo motors**.  
+**INFI HAND** is a robotic hand control system based on the [**ORCA Hand**](https://www.orcahand.com/dashboard) design, with custom modifications, and developed using **Feetech servo motors**.  
 It provides control software, calibration tools, and motor control modules to interface with the hardware.  
 The project also includes adapted CAD files to fit Feetech servos.
 
