@@ -1,4 +1,4 @@
-# Run command (for reference)：python -m hls.scripts.record_angles
+# Run command (for reference)：python -m hls.HAND.scripts.record_angles
 import time
 import yaml
 import threading

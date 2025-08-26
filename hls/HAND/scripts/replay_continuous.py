@@ -1,4 +1,4 @@
-# Run command (for reference)：python -m hls.scripts.replay_continuous /home/dw/INFI_hand/hls/orcahand_v1_right tt2_continuous_angles_20250825_124652.yaml
+# Run command (for reference)：python -m hls.HAND.scripts.replay_continuous /home/dw/INFI_hand/hls/HAND/orcahand_v1_right tt2_continuous_angles_20250825_124652.yaml
 import time
 import yaml
 import numpy as np

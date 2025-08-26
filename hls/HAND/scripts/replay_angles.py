@@ -1,4 +1,4 @@
-# Run command (for reference)：python -m hls.scripts.replay_angles /home/dw/INFI_hand/hls/orcahand_v1_right
+# Run command (for reference)：python -m hls.HAND.scripts.replay_angles /home/dw/INFI_hand/hls/HAND/orcahand_v1_right
 import time
 import yaml
 import numpy as np

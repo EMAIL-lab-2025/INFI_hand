@@ -1,4 +1,4 @@
-# Run command (for reference)：python -m hls.scripts.calibrate hls/orcahand_v1_right
+# Run command (for reference)：python -m hls.HAND.scripts.calibrate hls/HAND/orcahand_v1_right
 import argparse
 import sys
 import os

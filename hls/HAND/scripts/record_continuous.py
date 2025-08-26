@@ -1,4 +1,4 @@
-# Run command (for reference)：python -m hls.scripts.record_continuous /home/dw/INFI_hand/hls/orcahand_v1_right
+# Run command (for reference)：python -m hls.HAND.scripts.record_continuous /home/dw/INFI_hand/hls/HAND/orcahand_v1_right
 import time
 import yaml
 import argparse
