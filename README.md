@@ -19,16 +19,18 @@ INFI_HAND/
 ├── environment/
 │ ├── environment.yml
 ├── hls/
-│ ├── contrl/
-│ │ ├── client3.py # Handles communication with servos
-│ │ ├── core3.py # Provides the link between scripts and servos; includes control functions
-│ ├── orcahand_v1_right/
-│ │ ├── calibration_origin.yaml
-│ │ ├── calibration.yaml
-│ │ ├── config.yaml
-│ ├── scripts/
-│ │ ├── calibrate.py # Calibration script
-│ │ └── other scripts ...
+│ ├── HAND/
+│ │ ├── contrl/
+│ │ │ ├── client3.py # Handles communication with servos
+│ │ │ ├── core3.py # Provides the link between scripts and servos; includes control functions
+│ │ ├── orcahand_v1_right/
+│ │ │ ├── calibration_origin.yaml
+│ │ │ ├── calibration.yaml
+│ │ │ ├── config.yaml
+│ │ ├── scripts/
+│ │ │ ├── calibrate.py # Calibration script
+│ │ │ └── other scripts ...
+│ ├── Some scripts # servo test codes provided by Feetech official sources
 ├── scservo_sdk/ # Feetech Servo SDK
 ├── modified CAD/ # Adapted CAD files for Feetech servos
 ├── README.md
