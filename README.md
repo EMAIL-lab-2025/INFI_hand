@@ -34,7 +34,7 @@ INFI_HAND/
 │ │ │ └── other scripts ...
 │ ├── Some scripts # servo test codes provided by Feetech official sources
 ├── scservo_sdk/ # Feetech Servo SDK
-├── modified CAD/ # Adapted CAD files for Feetech servos
+├── modified_CAD_and_PCB/ 
 ├── README.md
 ├── LICENSE
 ```
