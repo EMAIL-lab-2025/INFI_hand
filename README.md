@@ -12,6 +12,8 @@ The project also includes adapted CAD files to fit Feetech servos.
 
 - **Other Servos (×16):** [HL-3915-C001 (12V, 14KG)](https://item.taobao.com/item.htm?id=944646559414&pisk=gFTUTYZszoU1klwsRdQz3C9l39_d5akjEU65ZQAlO9Xn26guzQRcNXH-9h5kFdh-9wOlULJ1Bz1SvYUyQpODAM9WATflIdAQRTgd4LRXHLaSJH1uzdORqLTywz5kZLhdFXn69BQRrxMjzqOp9j1fmoYFtP2M6sw3rcs3YVRI1xMjl4o3sakEhLOmv3xGgsbltg43Sf55My4kEgjgjOCRZJfu-fRGBOflZajhsPfAZzbuxTfgjsCbxkqhENfGB_blELbo_NXOZaXkEaDqtaba7TSns07ymEHK6MXDtOzuuSCFxROQVzaWX6jerCXw1CTNTMWcq4HzSUR2Ze_w08mHgNLfVFYtzPQBghbGGB3U7ZAHAeQBbAENIFRkJi_r5kbD_3vV6e0bL1KBsI6MgSz2Ow8w7ndZyy6hceOA_Geie1-MMLCcYRZpew5keiLSHyBHZILvcZu_xZAwqK5pPba5FedHqg8SCqIzZ8Ciz8YJY8qPx1CNhflarCuRd_8Ldyr82GNO_tGrauERxCCNhfyY2uIs61WjGgf..)
 
+- **Development Board (×1):**[URT-1](https://item.taobao.com/item.htm?id=575365901461&pisk=g4E8Tu9VrFDWj4OyeWbDKahV53B0pZ2z37y6xXckRSFY9Rpur2cnRDFa62thz00KvSG0qb2oVvgQt5aoNzcHvkF4w3xnVWjKORzVLbDuqpHQl7K3r8cukpnzmzxnZ_oLd5mds1jGj8yrTD1GsxMQWFisIUMWtXMjhDDLo8TkC8yrYX9DON4bUpCY_I7IdX6xcvHwPDgWVjMjgvYSOWGSlIMtQDGQOWgjlvkpAUGIAx6xIA8WVvM5c-MnCeM7OD6YhjkIAYNIAtejgvMShUhJFAKLy1gODA51d11_DY3-9Hcvvuqyj4c1ejxpvbHxyL2SMHtQDyBaXVhdcChUcWnsAVpGw8oYU5HgZit86Rr4MxN1vHc347Erqo66kX4ZB7c01Gtxc-2btVzVTh04Mk3LV4vC1fgg25kLVIWjo-GrVAzA63ouBjnuDDJBy04gIku_VgdZiVkLZjV1fnnbER4iVkXH8YUQIu4d4trgXqlJsfHHPtBv8euS3eXjsvR4moujHfXzUe8E5xkxstpv8eu76xhGUY8e827R.&spm=tbpc.boughtlist.suborder_itemtitle.1.433f2e8dT4YlWJ)
+
 ---
 ## Project Structure
 ```
@@ -85,3 +87,4 @@ This project is licensed under the [MIT License](https://github.com/EMAIL-lab-20
 ## Contact us
 - **EMAIL-lab**: email.lab.2025@gmail.com  
 - **FJ-Chen**: chenfj20@gmail.com
+- **ZL-Guo**: guozeliang20@hotmail.com
