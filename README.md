@@ -65,6 +65,7 @@ cd INFI_hand
 cd environment
 conda env create -f environment.yml
 conda activate INFI_HAND
+cd ..
 ```
 ### Step 3. Configure your setup
 Review the configuration file (e.g., `INFI_hand/hls/orcahand_v1_right/config.yaml`)  
