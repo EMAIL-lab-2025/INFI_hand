@@ -70,7 +70,7 @@ conda activate INFI_HAND
 cd ..
 ```
 ### Step 3. Configure your setup
-Review the configuration file (e.g., `INFI_hand/hls/orcahand_v1_right/config.yaml`)  
+Review the configuration file (e.g., `INFI_hand/hls/HAND/orcahand_v1_right/config.yaml`)  
 and ensure it matches your hardware setup.
 ### Step 4. Run tension and calibration scripts
 ```bash
