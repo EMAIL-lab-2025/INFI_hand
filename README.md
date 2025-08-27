@@ -6,7 +6,13 @@ It provides control software, calibration tools, and motor control modules to in
 The project also includes adapted CAD files to fit Feetech servos.
 
 ---
+## Servo Models
 
+- **Servo for Wrist  (×1):** [HL-3930-C001 (12V, 35KG)](https://item.taobao.com/item.htm?id=820985064908&pisk=gt9gTQ9Rh7qjFVw_smXs1PX4ENcKfO6X3EeAktQqTw7Ic5FtfsS2mEvv6n7AnEYDoNCq5OpD-3txfKn1Qxj2yeXvXNQv-mY9c-3sGOe4oFtr5hQxfKbV-F8cGc_AuZYv0CnKeYK6ft6qo4H-e8PE-0Lg3G7Z0JSlmDIZACk2at6qyqVL31MlhF5rflE4TM7CmizNbEWU8iSP3i5V7DbFmgN47EWqxDjcDZSNuGSeYg_UuiW4_kyFcge4btyqxH7C4t72u1oHYwsV3Zk4Xc723CJEooWa8MBWfpjGsa-nN-y0qGaRrhobH-9Ht6bzew243pjMmACM3JkVzQTeTCRubJCAdwvRjEM7CO5DNnIDSA2NpQL6a_OIo7byw36N2hMgKT-w9KjpHmFc7F9HYpf3V81MggKPfUuoB6L9T_dykmPllHdlgQCaJWLyv3p1OK0u8ZOOV9SJfA2hUhR9COdnRWbeKnJ1wTSzCWPrzl2fYmpUGS1NAMbJMR-Uy_RvWTmnxPff_MscyDm3Gj1NAMxExD4MG1SC2x5..)
+
+- **Other Servos (×16):** [HL-3915-C001 (12V, 14KG)](https://item.taobao.com/item.htm?id=944646559414&pisk=gFTUTYZszoU1klwsRdQz3C9l39_d5akjEU65ZQAlO9Xn26guzQRcNXH-9h5kFdh-9wOlULJ1Bz1SvYUyQpODAM9WATflIdAQRTgd4LRXHLaSJH1uzdORqLTywz5kZLhdFXn69BQRrxMjzqOp9j1fmoYFtP2M6sw3rcs3YVRI1xMjl4o3sakEhLOmv3xGgsbltg43Sf55My4kEgjgjOCRZJfu-fRGBOflZajhsPfAZzbuxTfgjsCbxkqhENfGB_blELbo_NXOZaXkEaDqtaba7TSns07ymEHK6MXDtOzuuSCFxROQVzaWX6jerCXw1CTNTMWcq4HzSUR2Ze_w08mHgNLfVFYtzPQBghbGGB3U7ZAHAeQBbAENIFRkJi_r5kbD_3vV6e0bL1KBsI6MgSz2Ow8w7ndZyy6hceOA_Geie1-MMLCcYRZpew5keiLSHyBHZILvcZu_xZAwqK5pPba5FedHqg8SCqIzZ8Ciz8YJY8qPx1CNhflarCuRd_8Ldyr82GNO_tGrauERxCCNhfyY2uIs61WjGgf..)
+
+---
 ## Project Structure
 ```
 INFI_HAND/
@@ -47,20 +53,26 @@ INFI_HAND/
 
 Follow the steps below to set up and use **INFI HAND**:
 
-### Step 1. Create a virtual environmentand install dependencies (recommended) 
+### Step 1. Clone the repository and navigate into it
 ```bash
+git clone https://github.com/EMAIL-lab-2025/INFI_hand.git
+cd INFI_hand
+```
+### Step 2. Create a virtual environmentand install dependencies (recommended) 
+```bash
+cd environment
 conda env create -f environment.yml
 conda activate INFI_HAND
 ```
-### Step 2. Configure your setup
+### Step 3. Configure your setup
 Review the configuration file (e.g., `INFI_hand/hls/orcahand_v1_right/config.yaml`)  
 and ensure it matches your hardware setup.
-### Step 3. Run tension and calibration scripts
+### Step 4. Run tension and calibration scripts
 ```bash
 python -m hls.HAND.scripts.tension hls/HAND/orcahand_v1_right
 python -m hls.HAND.scripts.calibrate hls/HAND/orcahand_v1_right
 ```
-### Step 4. Try to record and replay
+### Step 5. Try to record and replay
 After debugging and calibration, you can run record and replay scripts  
 to capture and reproduce a sequence of hand operations.
 
