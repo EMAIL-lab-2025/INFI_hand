@@ -67,3 +67,6 @@ to capture and reproduce a sequence of hand operations.
 ## LICENSE
 This project is licensed under the [MIT License](https://github.com/EMAIL-lab-2025/INFI_hand/blob/main/LICENSE).
 
+## Contact us
+- **EMAIL-lab**: email.lab.2025@gmail.com  
+- **FJ-Chen**: chenfj20@gmail.com
