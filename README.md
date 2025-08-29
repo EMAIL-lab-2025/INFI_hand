@@ -14,9 +14,10 @@ The project also includes adapted CAD files to fit Feetech servos.
 
 - **Development Board (×1):**[URT-1](https://item.taobao.com/item.htm?id=575365901461&pisk=g4E8Tu9VrFDWj4OyeWbDKahV53B0pZ2z37y6xXckRSFY9Rpur2cnRDFa62thz00KvSG0qb2oVvgQt5aoNzcHvkF4w3xnVWjKORzVLbDuqpHQl7K3r8cukpnzmzxnZ_oLd5mds1jGj8yrTD1GsxMQWFisIUMWtXMjhDDLo8TkC8yrYX9DON4bUpCY_I7IdX6xcvHwPDgWVjMjgvYSOWGSlIMtQDGQOWgjlvkpAUGIAx6xIA8WVvM5c-MnCeM7OD6YhjkIAYNIAtejgvMShUhJFAKLy1gODA51d11_DY3-9Hcvvuqyj4c1ejxpvbHxyL2SMHtQDyBaXVhdcChUcWnsAVpGw8oYU5HgZit86Rr4MxN1vHc347Erqo66kX4ZB7c01Gtxc-2btVzVTh04Mk3LV4vC1fgg25kLVIWjo-GrVAzA63ouBjnuDDJBy04gIku_VgdZiVkLZjV1fnnbER4iVkXH8YUQIu4d4trgXqlJsfHHPtBv8euS3eXjsvR4moujHfXzUe8E5xkxstpv8eu76xhGUY8e827R.&spm=tbpc.boughtlist.suborder_itemtitle.1.433f2e8dT4YlWJ)
 
-**Note:**
+## Note
 
-For the HL-3915 servo, when installing the spools, do not add a nut under the spools' bottom as instructed by ORCA. Instead, use a HM2.5*14 screw to go through the entire spool structure.
+For the HL-3915 servo, when installing the spools, do not add a nut under the spools' bottom as instructed by ORCA. Instead, use an HM2.5*14 screw to go through the entire spool structure.
+
 ---
 ## Project Structure
 ```
