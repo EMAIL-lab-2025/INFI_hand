@@ -290,7 +290,7 @@ class OrcaHand:
         if not self.calibrated or calibrate:
             self.calibrate()
         
-        # self.set_neutral_position()
+        # self.set_neutral_position() # please uncomment this line after setting the correct neutral points 
         return 0  # Return success
 
     def calibrate_manual(self):
